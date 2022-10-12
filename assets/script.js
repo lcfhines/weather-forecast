@@ -2,7 +2,14 @@
 // store searches in search history
 var citySearch = $('#search-bar');
 var searchHistory = $('#search-history');
-var currentCityDate =$('#current-city-date')
+var currentCityDate =$('.current-city-date');
+var currentCity = $('#current-city');
+var currentDate = $('#current-date');
+var currentTemp = $('#current-temp');
+var currentHumidity = $('#current-humidity');
+var currentWind = $('#current-wind');
+var currentIcon = $('#current-icon');
+var icon = $('#icon');
 
 var searches = [];
 
@@ -10,9 +17,6 @@ var APIKey = "d3cc6b6651a2e6f3be0149457f993f46";
 var lat = "";
 var lon = "";
 var cityName = "";
-
-
-
 
 function handleFormSubmit(event) {
     event.preventDefault();
@@ -36,30 +40,12 @@ function handleFormSubmit(event) {
             return response.json();
         })
         .then (function(data){
-            // console.log(data[0].lon);
-            // console.log(data[0].lat);
+            console.log(data);
+            console.log(data[0].lon);
+            console.log(data[0].lat);
             var lat = data[0].lat;
             var lon = data[0].lon;
-        
-        // pull current weather info for that lat and lon location
 
-            var requestURL ="https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=d3cc6b6651a2e6f3be0149457f993f46&units=imperial";
-
-            fetch(requestURL)
-            .then (function(response) {
-                return response.json();
-            })
-            .then (function(data){
-                // console.log(data);
-                
-    // <!-- WORKIKNG HERE -->
-                // display city name & date
-                var currentCity = data[0].name;
-                var currentDate = moment().format("MM/DD/YYYY")
-                
-                currentCityDate.text(currentCity + currentDate);
-
-            // display icon representation of weather, temp, humidity, wind spind
 
         // pull forecast info for that lat and lon location
 
@@ -72,8 +58,32 @@ function handleFormSubmit(event) {
         })
         .then (function(data){
             console.log(data);
+    
+            // pull current weather info for that lat and lon location
+        // display name & date
+
+            var date = moment().format("MM/DD/YYYY");
+
+            currentCity.text(data.city.name + " (" + date + ")");
+
+        // display icon representation of weather, 
+            var iconCode = data.list[0].weather[0].icon;
+            console.log(iconCode);
+            var iconURL = "http://openweathermap.org/img/wn/"+ iconCode + "@2x.png";
+            currentIcon.attr('src', iconURL);
+            currentIcon.attr('id', 'current-icon');
+            currentIcon.attr('alt', 'weather icon');
+
+
+        // display temp, humidity, wind spind
+            currentTemp.text("Temp: " + data.list[0].main.temp);
+            currentHumidity.text("Humidity: " + data.list[0].main.humidity);
+            currentWind.text("Wind speed: " + data.list[0].wind.speed);
+            
+            
 
         // display 5 day forecast with date, icon, temp, humidity, wind speed
+
         });
         
         });
@@ -96,7 +106,7 @@ function handleFormSubmit(event) {
     // clear input element
     $('input[name="city-input"]').val('');
 
-});
+};
 
 
 // <!-- not working -->
@@ -106,7 +116,7 @@ function handleFormSubmit(event) {
 //     if (storedSearches !== null) {
 //         searches = storedSearches;
 //     }
-}
+
 
 citySearch.on('submit', handleFormSubmit);
 // add event listener for clicking on a stored item
