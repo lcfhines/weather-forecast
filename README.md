@@ -4,6 +4,8 @@ Build a weather dashboard that will allow users to see the current weather and t
 ## Description
 The application runs in the browser and features dynamically updated HTML and CSS. Data is retrieved from the OpenWeather API based on the user's input in the search field.  
 
+To utilize the application, the user clicks into a search bar and types the name of a city. The Geocoding API returns the coordinates of the city. The current and 5 day forecast are fetched using those coordinates. An icon representation of weather conditions, the temperature, the humidity, and the wind speed are all printed to the application.
+
 The user's search history is stored in the browser, so a user can click on a recently searched city and see the current and future conditions without searching again. 
 
 ## User Story
